@@ -1,0 +1,351 @@
+{% extends 'ss/base.html' %}
+{% load staticfiles %}
+
+{% block extrahead %}
+<script type="text/javascript" src="{% static 'ss/js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $(function() {
+        $('#id_orders_table tbody tr').formset({
+            // For inline formsets, be sure to set the prefix, as the default prefix
+            // ('form') isn't correct.
+            // Django appears to generate the prefix from the lowercase plural
+            // name of the related model, with camel-case converted to underscores.
+        prefix: '{{ formset.prefix }}'
+        })
+    })
+</script>
+<style type="text/css">
+    .delete-row {
+        margin-left:5px;
+    }
+</style>
+<script src="{% static 'ss/js/count_down.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+       <!--<div id="page-content-wrapper">-->
+           <!--<div class="container-fluid">-->
+            <!--<div class="panel-group">-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-body">-->
+                        <!--<div class="row">-->
+                            <!--<h3>Votes you raised</h3>-->
+                            <!--<div class="col-md-2" style="">Vote Title</div>-->
+                            <!--<div class="col-md-2" style="">Price per Ticket</div>-->
+                            <!--<div class="col-md-2" style="">Remaining Tickets/Whole Tickets</div>-->
+                            <!--<div class="col-md-2" style="">Remaining Time</div>-->
+                            <!--<div class="col-md-2" style="">View Details!</div>-->
+                        <!--</div>-->
+
+
+                        <!--{% for question in my_raise_votes %}-->
+
+
+
+                        <!--<div class="row" >-->
+                            <!--<div class="col-md-2" style="">{{ question.question_title }}</div>-->
+                            <!--<div class="col-md-2" style="">{{ question.price_per_ticket }}</div>-->
+                            <!--<div class="col-md-2" style="">{{ question.remaining_tickets }}/{{ question.whole_tickets }}</div>-->
+                            <!--<div class="col-md-2" style="">-->
+                                <!--<p class='start_time' style="display:none;"> {{ question.starting_time|date:"M d, Y " }}{{ question.starting_time|time:"H:i"}}</p>-->
+                                <!--<p class='whole_time' style="display:none;"> {{ question.whole_time }}</p>-->
+                                <!--<span class='count_down'></span>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-2" style="">-->
+                                <!--<a class="btn button-transparent btn-sm" role="button" data-toggle="collapse" href="#{{ question.id }}" >Details</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<br>-->
+
+
+                        <!--<div class="collapse" id="{{ question.id }}" >-->
+                            <!--<div class="card card-block">-->
+                                <!--<div class="panel panel-primary panel-transparent1">-->
+                                <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+
+                                    <!--<div class="panel-heading1">{{ question.question_title }}</div>-->
+
+                                    <!--<div class="panel-body1">-->
+                                        <!--<p>{{ question.question_description }}</p>-->
+                                        <!--<p class='count_down' ></p>-->
+                                    <!--</div>-->
+
+
+                                    <!--<form class="question_form" role="form" action="{% url 'ss:g_s_index' %}" method="post" enctype="multipart/form-data">-->
+                                        <!--{% csrf_token %}-->
+                                        <!--<fieldset class="form-group">-->
+                                        <!--<input type="hidden" name="question" value="{{ question.pk }}">-->
+                                        <!--<legend><h4>Choices</h4></legend>-->
+                                            <!--{% for choice in question.answer_choice_set.all %}-->
+                                            <!--<div class="form-check">-->
+                                                <!--<label class="col-md-12 form-check-label">-->
+                                                    <!--<input type="radio" class="form-check-input" name="{{ form.choice.html_name }}" id="{{ form.choice.id_for_label }}" value="{{ choice.pk }}" disabled>-->
+                                                     <!--&mdash; {{ choice.answer_description }}-->
+                                                <!--</label>-->
+                                            <!--</div>-->
+                                            <!--{% endfor %}-->
+
+                                        <!--</fieldset>-->
+
+                                    <!--</form>-->
+                                <!--</div>-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+
+
+
+                        <!--{% endfor %}-->
+
+
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-body">-->
+                        <!--<div class="row">-->
+                            <!--<h3>Votes you answered</h3>-->
+                            <!--<div class="col-md-2" style="">Vote Title</div>-->
+                            <!--<div class="col-md-2" style="">Price per Ticket</div>-->
+                            <!--<div class="col-md-2" style="">Remaining Tickets/Whole Tickets</div>-->
+                            <!--<div class="col-md-2" style="">Remaining Time</div>-->
+                            <!--<div class="col-md-2" style="">View Details!</div>-->
+                        <!--</div>-->
+
+                        <!--{% for vote in my_answer_votes %}-->
+
+
+                        <!--<div class="row" >-->
+                            <!--<div class="col-md-2" style="">{{ vote.question.question_title }}</div>-->
+                            <!--<div class="col-md-2" style="">{{ vote.question.price_per_ticket }}</div>-->
+                            <!--<div class="col-md-2" style="">{{ vote.question.remaining_tickets }}/{{ vote.question.whole_tickets }}</div>-->
+                            <!--<div class="col-md-2" style="">-->
+                                <!--<p class='start_time' style="display:none;"> {{ vote.question.starting_time|date:"M d, Y " }}{{ vote.question.starting_time|time:"H:i"}}</p>-->
+                                <!--<p class='whole_time' style="display:none;"> {{ vote.question.whole_time }}</p>-->
+                                <!--<span class='count_down'></span>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-2" style="">-->
+                                <!--<a class="btn button-transparent btn-sm" role="button" data-toggle="collapse" href="#{{ vote.question.id }}" >Details</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<br>-->
+
+
+                        <!--<div class="collapse" id="{{ vote.question.id }}" >-->
+                            <!--<div class="card card-block">-->
+                                <!--<div class="panel panel-primary panel-transparent1">-->
+                                <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+
+                                    <!--<div class="panel-heading1">{{ vote.question.question_title }}</div>-->
+
+                                    <!--<div class="panel-body1">-->
+                                        <!--<p>{{ vote.question.question_description }}</p>-->
+                                        <!--<p class='count_down' ></p>-->
+                                    <!--</div>-->
+
+
+                                    <!--<form class="question_form" role="form" action="{% url 'ss:g_s_index' %}" method="post" enctype="multipart/form-data">-->
+                                        <!--{% csrf_token %}-->
+                                        <!--<fieldset class="form-group">-->
+                                        <!--<input type="hidden" name="question" value="{{ question.pk }}">-->
+                                        <!--<legend><h4>Choices</h4></legend>-->
+                                            <!--{% for choice in vote.question.answer_choice_set.all %}-->
+                                            <!--<div class="form-check">-->
+                                                <!--<label class="col-md-12 form-check-label">-->
+                                                    <!--<input type="radio" class="form-check-input" name="{{ form.choice.html_name }}" id="{{ form.choice.id_for_label }}" value="{{ choice.pk }}" disabled>-->
+                                                     <!--&mdash; {{ choice.answer_description }}-->
+                                                <!--</label>-->
+                                            <!--</div>-->
+                                            <!--{% endfor %}-->
+                                            <!--<h4>You have chosen {{ vote.choice.answer_description }}</h4>-->
+                                            <!--<h4>{{ vote.num_tickets }}</h4>-->
+                                        <!--</fieldset>-->
+
+                                    <!--</form>-->
+                                <!--</div>-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+
+
+
+                        <!--{% endfor %}-->
+
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
+        <!--</div>-->
+       <!--</div>-->
+
+
+
+
+<div class="w3-card-4 w3-margin w3-responsive">
+    <header class="w3-container w3-black w3-opacity"> <h3>我发起的投票</h3></header>
+    <table class="w3-table w3-striped w3-bordered">
+        <thead>
+            <tr class="w3-black w3-opacity">
+            <th>题目名称</th>
+            <th>已售票数</th>
+            <th>结题条件</th>
+            <th>剩余时间</th>
+            <th>收益指数</th>
+            <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in my_raise_votes %}
+
+            <tr>
+                <td>{{ question.question_title }}</td>>
+                <td>{{ question.tickets_sold }}</td>
+                <td>{{ question.time_ticket_switch_title }}</td>
+                <td>
+                    <p class='start_time_1' style="display:none;"> {{ question.starting_time|date:"M d, Y " }}{{ question.starting_time|time:"H:i"}}</p>
+                    <p class='whole_time_1' style="display:none;"> {{ question.whole_time }}</p>
+                    <span class='count_down'></span>
+                </td>
+                <td>{{ question.ratio}}</td>
+                <td>
+                    <a class="w3-btn w3-dark-grey" role="button" data-toggle="collapse" href="#{{ question.id }}" onclick="refresh_video({{ question.id }})">详细</a>
+                    <!--<div class="panel panel-default">-->
+                        <div id="{{ question.id }}" class="panel-collapse collapse" style="background: grey;
+    color: #ffffff;border-color: #ff0000; width:888px; left:50%; margin-top: 20px; margin-bottom: 20px; margin-left:-900px;">
+                            <div class="panel-heading">{{ question.question_description }}</div>
+                            <div class="panel-body">
+                                {% if question.question_images %}
+                                <div class="w3-row">
+                                    <img src="{{ question.question_images.url }}" width=300px/>
+                                </div>
+                                {% endif %}
+                                {% if question.question_videos %}
+                                <div class="w3-row">
+                                    <iframe id="video_{{ question.id }}" width="600" height="400" src="{{ question.question_videos }}" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                {% endif %}
+                                <form class="w3-container w3-card-4" action="{% url 'ss:g_s_index' %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="w3-group">
+                                        <div class="w3-row">
+                                        {% for choice in question.answer_choice_set.all %}
+                                        <div class="form-check">
+                                            <label class="w3-validate">
+                                                <input type="checkbox" class="w3-check" name="{{ form.choice.html_name }}" id="{{ form.choice.id_for_label }}" value="{{ choice.pk }}" disabled>
+                                                 -- {{ choice.answer_description }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    <!--</div>-->
+                </td>
+            </tr>
+
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+
+<div class="w3-card-4 w3-margin w3-responsive">
+    <header class="w3-container w3-black w3-opacity"> <h3>我参与的投票</h3></header>
+    <table class="w3-table w3-striped w3-bordered">
+        <thead>
+            <tr class="w3-black w3-opacity">
+            <th>题目名称</th>
+            <th>已售票数</th>
+            <th>结题条件</th>
+            <th>剩余时间</th>
+            <th>收益指数</th>
+            <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vote in my_answer_votes %}
+            <tr>
+                <td>{{ vote.question.question_title }}</td>>
+                <td>{{ vote.question.tickets_sold }}</td>
+                <td>{{ vote.question.time_ticket_switch_title }}</td>
+                <td>
+                    <p class='start_time_1' style="display:none;"> {{ vote.question.starting_time|date:"M d, Y " }}{{ vote.question.starting_time|time:"H:i"}}</p>
+                    <p class='whole_time_1' style="display:none;"> {{ vote.question.whole_time }}</p>
+                    <span class='count_down'></span>
+                </td>
+                <td>{{ vote.question.ratio}}</td>
+
+                <td>
+                    <a class="w3-btn w3-dark-grey" role="button" data-toggle="collapse" href="#votevote_{{ vote.id }}" onclick="refresh_vote({{ vote.question.id }})" >详细</a>
+
+                    <!--<div class="panel panel-default">-->
+                        <div id="votevote_{{ vote.id }}" class="panel-collapse collapse" style="background: grey;
+    color: #ffffff;border-color: #ff0000; width:888px; left:50%; margin-top: 20px; margin-bottom: 20px; margin-left:-900px;">
+                            <div class="panel-heading">{{ vote.question.question_description }}</div>
+                            <div class="panel-body">
+                                {% if vote.question.question_images %}
+                                <div class="w3-row">
+                                    <img src="{{ vote.question.question_images.url }}" width=300px/>
+                                </div>
+                                {% endif %}
+                                {% if vote.question.question_videos %}
+                                <div class="w3-row">
+                                    <iframe id="vote_{{ vote.question.id }}" width="600" height="400" src="{{ vote.question.question_videos }}" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                {% endif %}
+                                <form class="w3-container w3-card-4" action="{% url 'ss:g_s_index' %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="w3-group">
+                                        <div class="w3-row">
+                                        {% for choice in vote.question.answer_choice_set.all %}
+                                            {% if vote.choice == choice %}
+                                                <div class="form-check">
+                                                <label class="w3-validate">
+                                                <input type="checkbox" class="w3-check" name="{{ form.choice.html_name }}"  value="{{ choice.pk }}" checked="checked">
+                                                 -- {{ choice.answer_description }}
+                                                </label>
+                                                </div>
+                                            {% else %}
+                                            <div class="form-check">
+                                                <label class="w3-validate">
+                                                    <input type="checkbox" class="w3-check" name="{{ form.choice.html_name }}"  value="{{ choice.pk }}">
+                                                     -- {{ choice.answer_description }}
+                                                </label>
+                                            </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="panel-footer" style="background:grey; ">You have chosen "{{ vote.choice.answer_description }}" for {{ vote.num_tickets }} tickets.</div>
+                        </div>
+                    <!--</div>-->
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+function refresh_video(id){
+var url=$('#video_'+id).attr("src");
+$('#video_'+id).attr("src","");
+$('#video_'+id).attr("src", url);
+}
+</script>
+<script>
+function refresh_vote(id){
+var url=$('#vote_'+id).attr("src");
+$('#vote_'+id).attr("src","");
+$('#vote_'+id).attr("src", url);
+}
+</script>
+{% endblock %}
