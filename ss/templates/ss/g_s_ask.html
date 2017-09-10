@@ -1,0 +1,120 @@
+{% load staticfiles %}
+{% block extrahead %}
+
+{% endblock %}
+<form class="w3-form" role="form" action="{% url 'ss:g_s_ask' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="w3-container">
+        <span>{{ field.errors }}</span>
+    </div>
+    <div class="w3-row-padding">
+        <label for="{{ form.subject.id_for_label }}" class="w3-label">主题 (必选)</label>
+            <select id="{{ form.subject.id_for_label }}" class="w3-select" name="{{ form.subject.html_name }}" style="height:40px;" required>
+                    {% for value, name in form.fields.subject.choices %}
+                    <option value="{{ value }}">{{ name }}</option>
+                    {% endfor %}
+            </select>
+    </div>
+
+
+        <div class="w3-container">
+            <span>{{ field.errors }}</span>
+        </div>
+    <div class="w3-row-padding">
+        <label for="{{ form.question_title.id_for_label }}" class="w3-label">题目名称 (必填)</label>
+        <input class="w3-input" type="text" id="{{ form.question_title.id_for_label }}" name="{{ form.question_title.html_name }}"  placeholder="不超过30字" required>
+    </div>
+
+
+    <div class="w3-container">
+        <span>{{ field.errors }}</span>
+    </div>
+
+    <div class="w3-row-padding">
+        <label for="{{ form.question_description.id_for_label }}" class="w3-label">题目描述 (必填)</label>
+        <textarea class="w3-input" type="text" id="{{ form.question_description.id_for_label }}" maxlength="10000" name="{{ form.question_description.html_name }}" placeholder="不超过100字" required></textarea>
+    </div>
+    
+    <div class="w3-row-padding">
+        <label for="{{ form.question_images.id_for_label }}" class="w3-label">添加图片 (可选)</label>
+        <input class="w3-input" type="file" id="{{ form.question_images.id_for_label }}" name="{{ form.question_images.html_name }}">
+    </div>
+
+    <div class="w3-row-padding">
+        <label for="{{ form.question_videos.id_for_label }}" class="w3-label">添加视频连接 (可选)</label>
+        <textarea class="w3-input" type="text" id="{{ form.question_videos.id_for_label }}" maxlength="10000" name="{{ form.question_videos.html_name }}"></textarea>
+    </div>
+
+    <div class="w3-container">
+        <span>{{ field.errors }}</span>
+    </div>
+
+
+    <!--<div class="w3-row-padding">-->
+        <!--<label for="{{ form.time_ticket_switch.id_for_label }}" class="w3-label">Switch Number</label>-->
+        <!--<input class="w3-input" type="number" id="{{ form.time_ticket_switch.id_for_label }}" name="{{ form.time_ticket_switch.html_name }}" required>-->
+    <!--</div>-->
+
+    <div class="w3-row-padding">
+        <label class="w3-label">结题条件 (必选)</label><br/>
+        <blockquote>
+
+            <input type="radio" name="{{ form.time_ticket_switch.html_name }}" id="{{ from.time_ticket_switch.time_and_ticket }}" value="1" onchange="findRadioSelected()">
+            <label for="{{ from.time_ticket_switch.time_and_ticket }}">有限时间*有限票数</label><br/>
+
+            <input type="radio" name="{{ form.time_ticket_switch.html_name }}" id="{{ from.time_ticket_switch.only_time }}" value="2" onchange="findRadioSelected()">
+            <label for="{{ from.time_ticket_switch.only_time }}">有限时间*不限票数</label><br/>
+
+            <input type="radio" name="{{ form.time_ticket_switch.html_name }}" id="{{ form.time_ticket_switch.only_tickets }}" value="3" onchange="findRadioSelected()">
+            <label for="{{ form.time_ticket_switch.only_tickets }}">有限票数*不限时间</label><br/>
+        </blockquote>
+    </div>
+    <div class="w3-container">
+        <span>{{ field.errors }}</span>
+    </div>
+    <div class="w3-row-padding">
+        <label for="{{ form.whole_tickets.id_for_label }}" class="w3-label">题目总票数</label>
+            <input class="w3-input" type="number" id="{{ form.whole_tickets.id_for_label }}" name="{{ form.whole_tickets.html_name }}">
+    </div>
+    <div class="w3-container">
+        <span>{{ field.errors }}</span>
+    </div>
+
+    <div class="w3-row-padding">
+        <label for="{{ form.whole_time.id_for_label }}" class="w3-label">题目开放时间 (分钟)</label>
+        <input class="w3-input" type="text" maxlength="100" id="{{ form.whole_time.id_for_label }}" name="{{ form.whole_time.html_name }}">
+    </div>
+        <div class="col-sm-offset-2 col-sm-10">
+            <span class="text-danger small">{{ field.errors }}</span>
+        </div>
+    <div class="w3-row-padding">
+        <label for="{{ form.price_per_ticket.id_for_label }}" class="w3-label">单票价格(元) (必填)</label>
+        <input type="number" step="any" class="w3-input" id="{{ form.price_per_ticket.id_for_label }}" name="{{ form.price_per_ticket.html_name }}">
+
+    </div>
+        <div class="w3-container">
+            <span class="text-danger small">{{ field.errors }}</span>
+        </div>
+    <div class="w3-row-padding">
+        <label for="Choices" class="w3-label">投票选项 (必填)</label>
+            <table id="id_orders_table" border="0" cellpadding="0" cellspacing="5">
+                <tbody>
+                {% for choice in formset.forms %}
+                <tr id="{{ choice.prefix }}-row">
+                    <td>
+                        {% for fld in choice.hidden_fields %}{{ fld }}{% endfor %}
+                        {% if choice.instance.pk %}{{ choice.DELETE }}{% endif %}
+                        <input class="w3-input" type="text" id="{{ choice.answer_description.id_for_label }}" name="{{ choice.answer_description.html_name }}" required>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </div>
+    {{ formset.management_form }}
+    <div class="w3-container">
+        <button onclick="document.getElementById('ask').style.display='none'" type="button" class="w3-btn w3-dark-grey w3-padding-left">取消</button>
+        <button type="submit" class="w3-btn w3-dark-grey w3-right w3-padding-right", value="Submit">提交</button>
+    </div>
+</form>
+

@@ -1,0 +1,244 @@
+{% extends 'ss/base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block extrahead %}
+    <script src="{% static 'ss/js/count_down.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <!-- Page Content -->
+
+<div class="w3-card-4 w3-margin w3-responsive">
+    <header class="w3-container w3-black w3-opacity"> <h3>Search Questions</h3> </header> <div class="w3-container w3-margin-top">
+    <form role="search" method="get" action="{% url 'ss:g_s_index' %}">
+        <div class="w3-row">
+        <div class="w3-quarter">
+            <input type="text" class="w3-input" placeholder="Search for..." name="q" value="{{ request.GET.q }}">
+        </div>
+        <div class="w3-third w3-quarter w3-margin-left">
+            <span class="w3-group">
+                <button class="w3-btn w3-dark-grey" type="submit">Submit!</button>
+            </span>
+        </div>
+        </div>
+        <div class="w3-row">
+        <div class="w3-twothird">
+            <div class="w3-row">
+                <label class="w3-label w3-text-grey">Subject:&nbsp;&nbsp;</label>
+                    <input class="w3-check" type="checkbox" id="inlineCheckboxsa" name="q_subject_all" value="optionsa"> <label class="w3-label w3-text-grey">All&nbsp;&nbsp;</label>
+            {% for subject in subject_list %}
+            <input class="w3-check" type="checkbox" name="{{ subject.subject_title }}" value="{{ subject.subject_title }}"><label class="w3-label w3-text-grey">{{ subject.subject_title }}&nbsp;&nbsp;</label>
+            {% endfor %}
+            </div>
+            <div class="w3-row">
+                <label class="w3-label w3-text-grey">Money:&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxma" name="q_money_all" value="optionma"> <label class="w3-label w3-text-grey">All &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm0" name="q_money_0" value="optionm0"> <label class="w3-label w3-text-grey">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm1" name="q_money_1" value="optionm1"> <label class="w3-label w3-text-grey">0~1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm2" name="q_money_2" value="optionm2"> <label class="w3-label w3-text-grey">1~2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm3" name="q_money_3" value="optionm3"> <label class="w3-label w3-text-grey">2~3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm4" name="q_money_4" value="optionm4"> <label class="w3-label w3-text-grey">3~4</label>
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+
+
+{% if refine_action == 1 %}
+
+    {% if refine_result == 0 %}
+    <div class="w3-container">
+
+        <p class="w3-text-green">No such results according to your search....</p>
+
+        <p class="w3-text-green">Here are all the votes....</p>
+    </div>
+
+    {% endif %}
+
+{% endif %}
+
+<div class="w3-card-4 w3-margin w3-responsive">
+    <table class="w3-table w3-striped w3-bordered">
+        <thead>
+        <tr class="w3-black w3-opacity">
+            <th>Vote Title</th>
+            <th>Price per Ticket</th>
+            <th>Remaining Tickets/Whole Tickets</th>
+            <th>Remaining Time</th>
+            <th>Click here to vote!</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for question in question_list %}
+
+
+        <tr>
+            <td>{{ question.question_title }}</td>
+            <td>{{ question.price_per_ticket }}</td>
+            <td>{{ question.remaining_tickets }}/{{ question.whole_tickets }}</td>
+            <td>
+                <p class='start_time_1' style="display:none;"> {{ question.starting_time|date:"M d, Y " }}{{ question.starting_time|time:"H:i"}}</p>
+                <p class='whole_time_1' style="display:none;"> {{ question.whole_time }}</p>
+                <span class='count_down'></span>
+            </td>
+
+            <td>
+                {% if question.user != user %}
+                    <a class="w3-btn w3-dark-grey" role="button" onclick='document.getElementById("answer_question_{{ question.id }}").style.display="block"' href="#{{ question.id }}" >Start to Vote</a>
+                {% endif %}
+
+                {% if question.user == user %}
+                    <a class="w3-red">You raised this vote!</a>
+                {% endif %}
+
+            </td>
+            <div id="answer_question_{{ question.id }}" class="w3-modal" >
+                <div class="w3-modal-content w3-card-8 w3-animate-zoom" id="{{ question.id }}" style="max-width:600px">
+                  <div class="w3-center w3-light-grey w3-padding-large"><br>
+                      <span onclick="close_modal({{ question.id }})" class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright" title="Close Modal">&times;</span>
+                  </div>
+                  {% if user.is_active %}
+                    <div class="w3-container w3-light-grey">
+                        <fieldset class="w3-group">
+                        <legend class="w3-text-black">{{ question.question_title }}</legend>
+                        <p>{{ question.question_description }}</p>
+                        {% if question.question_images %}
+                            <img src="{{ question.question_images.url }}" width=300px/>
+                        {% endif %}
+                        {% if question.question_videos %}
+                        <iframe id="video_{{ question.id }}" width="500" height="330" src="{{ question.question_videos }}" frameborder="0" allowfullscreen></iframe>
+                        {% endif %}
+                        <p class='start_time_2' style="display:none;"> {{ question.starting_time|date:"M d, Y " }}{{ question.starting_time|time:"H:i"}}</p>
+                        <p class='whole_time_2' style="display:none;"> {{ question.whole_time }}</p>
+                        <p class='count_down w3-text-grey'></p>
+                        </fieldset>
+
+
+                        <form class="w3-form" role="form" action="{% url 'ss:g_s_index' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset class="w3-group">
+                            <input type="hidden" name="question" value="{{ question.pk }}">
+                            <legend>Choices</legend>
+                                {% for choice in question.answer_choice_set.all %}
+                                <div class="w3-check">
+                                    <label class="w3-label">
+                                        <input type="radio" class="w3-radio" name="{{ form.choice.html_name }}" id="{{ form.choice.id_for_label }}" value="{{ choice.pk }}"> &mdash; {{ choice.answer_description }}
+                                        {% if choice.win %}
+                                        <span class="w3-text-red">Win!</span>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                <input class="whole_tickets" type="hidden" value="{{ question.whole_tickets }}">
+                                <input class="remaining_tickets" type="hidden" value="{{ question.remaining_tickets }}">
+                                <div class="w3-group w3-row">
+                                    <label for="{{ form.num_tickets.id_for_label }}" class="w3-third w3-padding-large w3-label">Ticket Number:</label>
+                                    <input id="{{ form.num_tickets.id_for_label }}" name="{{ form.num_tickets.html_name }}" type="number" value="0" class="w3-input w3-quarter" min="1" max="{{ question.remaining_tickets }}" required>
+                                </div>
+                                {% if user.is_active %}
+                                <div class="w3-row">
+                                    <input class="user_voted" type="hidden" value="{{ user_voted|getbyindex:question.pk }}">
+                                    <p> You have voted <span class="w3-text-red">{{ user_voted|getbyindex:question.pk }}</span> tickets on this question.</p>
+                                </div>
+                                {% endif %}
+                            </fieldset>
+                          <button onclick="close_modal({{ question.id }})" type="button" class="w3-btn w3-red w3-padding-left">Cancel</button>
+                        <button type="submit" class="w3-btn w3-dark-grey w3-right w3-padding-right">Submit</button>
+                        </form>
+                    </div>
+                    {% else %} 
+                    <div class="w3-container w3-light-grey">
+                    <h3>Log In</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <form class="w3-container" action="{% url 'ss:login_user' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+                        <div class="w3-section">
+                          <label><b>Username</b></label>
+                          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" id="id_username" name="username" required>
+                          <label><b>Password</b></label>
+                          <input class="w3-input w3-border" type="password" placeholder="Enter Password" id="id_password" name="password" required>
+                          <button class="w3-btn-block w3-green w3-section w3-padding" type="submit">Login</button>
+                          <input class="w3-check w3-margin-top" type="checkbox" checked="checked"> Remember me
+                        </div>
+                    </form>
+                    </div>
+                    {% endif %}
+                    <div class="w3-container w3-padding-16 w3-light-grey"><br>
+                    </div>
+                </div>
+            </div>
+
+        </tr>
+
+        {% endfor %}
+    </tbody>
+
+    </table>
+</div>
+
+<script>
+$(document).ready(function(){
+    window.setInterval(function() {
+        $(".start_time_2").each(function(){
+            var start_time = new Date($(this).text());
+            var whole_time = Number($(this).siblings('.whole_time_2').text())*60000;
+            var today = new Date();
+            var dt = today.getTime() - start_time.getTime() + today.getTimezoneOffset()*60*1000;
+            if (whole_time > -1){
+                if (dt > whole_time){
+                    $(this).siblings('.count_down').html("<span style='color:red;'> Timeout!</span>");
+                    $(this).parent().parent().find('button').hide();
+                }
+                else {
+                    dt = whole_time - dt;
+                    var hh = Math.floor(dt/3600000);
+                    var mm = Math.floor((dt%3600000)/60000);
+                    var ss = Math.floor((dt%60000)/1000);
+                    hh = checkTime(hh);
+                    mm = checkTime(mm);
+                    ss = checkTime(ss);
+                    $(this).siblings('.count_down').text(hh+":"+mm+":"+ss);
+                }
+            }
+        });
+    }, 1000);
+});
+</script>
+
+<script>
+$(document).ready(function(){
+    $(".whole_tickets").each(function(){
+        var whole_tickets=$(this).val();
+        var remaining_tickets=$(this).siblings(".remaining_tickets").val();
+        var max_tickets=Math.min(Math.floor(whole_tickets*0.4), remaining_tickets);
+        var user_voted=$(this).next().next().next().find("input").val();
+        if (whole_tickets != -1){
+            var available_vote=Math.max(0, max_tickets-user_voted);
+        }else{
+            var available_vote = Math.max(0, 20-user_voted);
+        }
+        $(this).next().next().find("input").attr({"max": available_vote});
+        $(this).next().next().next().find("p").append("You can vote at most <span class='w3-text-red'>"+available_vote+"</span> more tickets.");
+    })
+})
+</script>
+<script>
+function close_modal(id){
+$('#answer_question_'+id).css('display','none');
+var url=$('#video_'+id).attr("src");
+$('#video_'+id).attr("src","");
+$('#video_'+id).attr("src", url);
+}
+</script>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,134 @@
+{% extends 'ss/base.html' %}
+{% block albums_active %}active{% endblock %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    <script src="{% static 'ss/js/count_down.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <h1>I want to vote!</h1>
+                    <p>There are some descriptions of how to achieve the voting provess...</p>
+                    <p>There are some descriptions of how to achieve the voting provess...</p>
+                    <p>There are some descriptions of how to achieve the voting provess...</p>
+                    <p>There are some descriptions of how to achieve the voting provess...</p>
+                    <p>
+                        <a href="{% url 'ss:g_s_answer' %}" class="btn button-transparent btn-md" role="button">I want to vote!!!</a>
+                    </p>
+                </div>
+                <div class="col-sm-6 ">
+                    <h1>I want to raise a vote!</h1>
+                    <p>There are some descriptions of how to raise a vote bla bla bla bla...</p>
+                    <p>There are some descriptions of how to raise a vote bla bla bla bla...</p>
+                    <p>There are some descriptions of how to raise a vote bla bla bla bla...</p>
+                    <p>There are some descriptions of how to raise a vote bla bla bla bla...</p>
+
+
+                    <p>
+                        <a href="{% url 'ss:g_s_ask' %}" class="btn button-transparent btn-md" role="button">I want to raise a vote!!!</a>
+                    </p>
+                <br>
+                <br>
+
+
+                </div>
+
+                <div class="col-sm-12 ">
+                    <div class="panel panel-primary panel-transparent">
+                        <div class="panel-body">
+
+
+                            <div class="row">
+                                <div class="col-md-2" style="">Vote Title</div>
+                                <div class="col-md-2" style="">Price per Ticket</div>
+                                <div class="col-md-2" style="">Remaining Tickets/Whole Tickets</div>
+                                <div class="col-md-2" style="">Remaining Time</div>
+                                <div class="col-md-2" style="">Click here to vote!</div>
+                            </div>
+
+
+                            {% for question in question_list %}
+
+
+                            <div class="row" >
+                                <div class="col-md-2" style="">{{ question.question_title }}</div>
+                                <div class="col-md-2" style="">{{ question.price_per_ticket }}</div>
+                                <div class="col-md-2" style="">{{ question.remaining_tickets }}/{{ question.whole_tickets }}</div>
+                                <div class="col-md-2" style="">
+                                    <p class='start_time' style="display:none;"> {{ question.starting_time|date:"M d, Y " }}{{ question.starting_time|time:"H:i"}}</p>
+                                    <p class='whole_time' style="display:none;"> {{ question.whole_time }}</p>
+                                    <span class='count_down'></span>
+                                </div>
+                                <div class="col-md-2" style="">
+                                    <a class="btn button-transparent btn-sm" role="button" data-toggle="collapse" href="#{{ question.id }}" >Start to Vote</a>
+                                </div>
+                            </div>
+
+                            <br>
+
+
+                            <div class="collapse" id="{{ question.id }}" >
+                                <div class="card card-block">
+                                    <div class="panel panel-primary panel-transparent1">
+                                    <!-- Default panel contents -->
+
+                                        <div class="panel-heading1">{{ question.question_title }}</div>
+
+                                        <div class="panel-body1">
+                                            <p>{{ question.question_description }}</p>
+                                            <p class='count_down' ></p>
+                                        </div>
+
+
+                                        <form class="question_form" role="form" action="{% url 'ss:g_s_answer' %}" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <fieldset class="form-group">
+                                            <input type="hidden" name="question" value="{{ question.pk }}">
+                                            <legend><h4>Choices</h4></legend>
+                                                {% for choice in question.answer_choice_set.all %}
+                                                <div class="form-check">
+                                                    <label class="col-md-12 form-check-label">
+                                                        <input type="radio" class="form-check-input" name="{{ form.choice.html_name }}" id="{{ form.choice.id_for_label }}" value="{{ choice.pk }}" > &mdash; {{ choice.answer_description }}
+                                                        {% if choice.win %}
+                                                        <span style="color:red">Win!</span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                                <div class="form-group row">
+<label for="{{ form.num_tickets.id_for_label }} class="col-sm-12 form-check-label"">Ticket Number:</label>
+                                                    <div class="col-md-3">
+                                                <input id="{{ form.num_tickets.id_for_label }}" name="{{ form.num_tickets.html_name }}" type="number" value="0" class="form-control form-transparent" required>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <button type="submit" class="btn button-transparent btn-sm">Submit</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+
+
+
