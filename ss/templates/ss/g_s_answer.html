@@ -5,11 +5,17 @@
     <script src="{% static 'ss/js/count_down.js' %}"></script>
 {% endblock %}
 
+
+
+
+
+
+
 {% block body %}
     <!-- Page Content -->
 
 <div class="w3-card-4 w3-margin w3-responsive">
-    <header class="w3-container w3-black w3-opacity"> <h3>Search Questions</h3> </header> <div class="w3-container w3-margin-top">
+    <header class="w3-container w3-black w3-opacity"> <h3>检索题目</h3> </header> <div class="w3-container w3-margin-top">
     <form role="search" method="get" action="{% url 'ss:g_s_index' %}">
         <div class="w3-row">
         <div class="w3-quarter">
@@ -17,21 +23,21 @@
         </div>
         <div class="w3-third w3-quarter w3-margin-left">
             <span class="w3-group">
-                <button class="w3-btn w3-dark-grey" type="submit">Submit!</button>
+                <button class="w3-btn w3-dark-grey" type="submit">搜索</button>
             </span>
         </div>
         </div>
         <div class="w3-row">
         <div class="w3-twothird">
             <div class="w3-row">
-                <label class="w3-label w3-text-grey">Subject:&nbsp;&nbsp;</label>
-                    <input class="w3-check" type="checkbox" id="inlineCheckboxsa" name="q_subject_all" value="optionsa"> <label class="w3-label w3-text-grey">All&nbsp;&nbsp;</label>
+                <label class="w3-label w3-text-grey">主题:&nbsp;&nbsp;</label>
+                    <input class="w3-check" type="checkbox" id="inlineCheckboxsa" name="q_subject_all" value="optionsa"> <label class="w3-label w3-text-grey">所有&nbsp;&nbsp;</label>
             {% for subject in subject_list %}
             <input class="w3-check" type="checkbox" name="{{ subject.subject_title }}" value="{{ subject.subject_title }}"><label class="w3-label w3-text-grey">{{ subject.subject_title }}&nbsp;&nbsp;</label>
             {% endfor %}
             </div>
             <div class="w3-row">
-                <label class="w3-label w3-text-grey">Money:&nbsp;&nbsp;&nbsp;</label>
+                <label class="w3-label w3-text-grey">单项价值:&nbsp;&nbsp;&nbsp;</label>
                 <input class="w3-check" type="checkbox" id="inlineCheckboxma" name="q_money_all" value="optionma"> <label class="w3-label w3-text-grey">All &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input class="w3-check" type="checkbox" id="inlineCheckboxm0" name="q_money_0" value="optionm0"> <label class="w3-label w3-text-grey">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input class="w3-check" type="checkbox" id="inlineCheckboxm1" name="q_money_1" value="optionm1"> <label class="w3-label w3-text-grey">0~1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -62,39 +68,50 @@
 
 {% endif %}
 
-<div class="w3-card-4 w3-margin w3-responsive">
-    <table class="w3-table w3-striped w3-bordered">
+<div class="w3-card-4 w3-margin w3-responsive" style="font-size:15px;">
+    <table class="w3-table w3-striped w3-bordered w3-table-all w3-tiny" align="center" style="font-size:15px;">
         <thead>
         <tr class="w3-black w3-opacity">
-            <th>Vote Title</th>
-            <th>Price per Ticket</th>
-            <th>Remaining Tickets/Whole Tickets</th>
-            <th>Remaining Time</th>
-            <th>Click here to vote!</th>
+            <th>题目名称</th>
+            <th>已售票数</th>
+            <th>结题条件</th>
+            <th>剩余时间</th>
+            <th>收益指数</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         {% for question in question_list %}
 
 
-        <tr>
+        <tr class="w3-hover-grey">
             <td>{{ question.question_title }}</td>
-            <td>{{ question.price_per_ticket }}</td>
-            <td>{{ question.remaining_tickets }}/{{ question.whole_tickets }}</td>
+            <td>{{ question.tickets_sold }}</td>
+            <!--<td>{{ question.time_ticket_switch }}</td>-->
+            <td>{{ question.time_ticket_switch_title }}</td>
             <td>
                 <p class='start_time_1' style="display:none;"> {{ question.starting_time|date:"M d, Y " }}{{ question.starting_time|time:"H:i"}}</p>
                 <p class='whole_time_1' style="display:none;"> {{ question.whole_time }}</p>
                 <span class='count_down'></span>
             </td>
+            <td>
+                <p class="id_ratio" style="display:none;">{{ question.pk }}</p>
+                <span class="ratio"></span>
+            </td>
 
             <td>
                 {% if question.user != user %}
-                    <a class="w3-btn w3-dark-grey" role="button" onclick='document.getElementById("answer_question_{{ question.id }}").style.display="block"' href="#{{ question.id }}" >Start to Vote</a>
+                    <a class="w3-button w3-dark-grey" role="button" onclick='document.getElementById("answer_question_{{ question.id }}").style.display="block"' href="#{{ question.id }}" >参与投票</a>
                 {% endif %}
 
                 {% if question.user == user %}
-                    <a class="w3-red">You raised this vote!</a>
+                    <a class="w3-button w3-dark-grey" role="button" onclick='document.getElementById("answer_question_{{ question.id }}").style.display="block"' href="#{{ question.id }}" >参与投票</a>
+                    <span class="w3-dark-grey">*</span>
                 {% endif %}
+
+                <!--{% if question.user == user %}-->
+                    <!--<button class="w3-btn w3-dark-grey" type="button" disabled="disabled">我发起的投票</>-->
+                <!--{% endif %}-->
 
             </td>
             <div id="answer_question_{{ question.id }}" class="w3-modal" >
@@ -128,9 +145,9 @@
                                 <div class="w3-check">
                                     <label class="w3-label">
                                         <input type="radio" class="w3-radio" name="{{ form.choice.html_name }}" id="{{ form.choice.id_for_label }}" value="{{ choice.pk }}"> &mdash; {{ choice.answer_description }}
-                                        {% if choice.win %}
-                                        <span class="w3-text-red">Win!</span>
-                                        {% endif %}
+                                        <!--{% if choice.win %}-->
+                                        <!--<span class="w3-text-red">Win!</span>-->
+                                        <!--{% endif %}-->
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -151,7 +168,7 @@
                         <button type="submit" class="w3-btn w3-dark-grey w3-right w3-padding-right">Submit</button>
                         </form>
                     </div>
-                    {% else %} 
+                    {% else %}
                     <div class="w3-container w3-light-grey">
                     <h3>Log In</h3>
                     {% if error_message %}
@@ -182,6 +199,9 @@
 
     </table>
 </div>
+
+
+
 
 <script>
 $(document).ready(function(){
@@ -238,7 +258,20 @@ $('#video_'+id).attr("src", url);
 }
 </script>
 
+<script>
+function update_ratio(obj, text){
+    obj.siblings('.ratio').text(text);
+}
+$(document).ready(function(){
+    window.setInterval(function() {
+        $(".id_ratio").each(function(){
+            id=$(this).text();
+            $.ajax({context: this, url: 'ratio/'+id+'/',  success: function(result){
+                $(this).siblings('.ratio').text(result);
+            }});
+        });
+    }, 1000);
+});
+</script>
+
 {% endblock %}
-
-
-
