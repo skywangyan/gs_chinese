@@ -96,17 +96,17 @@ def g_s_answer(request):
 
             if query_money_2 is not None:
                 refine_filter = 1
-                if question.price_per_ticket > 1.0 and question.price_per_ticket <= 2.0:
+                if question.price_per_ticket > 1.0 and question.price_per_ticket <= 10.0:
                     question_ids_working.append(question.id)
 
             if query_money_3 is not None:
                 refine_filter = 1
-                if question.price_per_ticket > 2.0 and question.price_per_ticket <= 3.0:
+                if question.price_per_ticket > 10.0 and question.price_per_ticket <= 100.0:
                     question_ids_working.append(question.id)
 
             if query_money_4 is not None:
                 refine_filter = 1
-                if question.price_per_ticket > 3.0 and question.price_per_ticket <= 4.0:
+                if question.price_per_ticket > 100.0 and question.price_per_ticket <= 1000.0:
                     question_ids_working.append(question.id)
 
         if len(question_ids_working) > 0:

@@ -15,7 +15,7 @@
     <!-- Page Content -->
 
 <div class="w3-card-4 w3-margin w3-responsive">
-    <header class="w3-container w3-black w3-opacity"> <h3>检索题目</h3> </header> <div class="w3-container w3-margin-top">
+    <header class="w3-container w3-black w3-opacity"> <h6>检索题目</h6> </header> <div class="w3-container w3-margin-top">
     <form role="search" method="get" action="{% url 'ss:g_s_index' %}">
         <div class="w3-row">
         <div class="w3-quarter">
@@ -30,20 +30,20 @@
         <div class="w3-row">
         <div class="w3-twothird">
             <div class="w3-row">
-                <label class="w3-label w3-text-grey">主题:&nbsp;&nbsp;</label>
-                    <input class="w3-check" type="checkbox" id="inlineCheckboxsa" name="q_subject_all" value="optionsa"> <label class="w3-label w3-text-grey">所有&nbsp;&nbsp;</label>
+                <label class="w3-label w3-text-grey">主题:&nbsp;&nbsp;&nbsp;</label>
+                    <input class="w3-check" type="checkbox" id="inlineCheckboxsa" name="q_subject_all" value="optionsa"> <label class="w3-label w3-text-grey">所有&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             {% for subject in subject_list %}
-            <input class="w3-check" type="checkbox" name="{{ subject.subject_title }}" value="{{ subject.subject_title }}"><label class="w3-label w3-text-grey">{{ subject.subject_title }}&nbsp;&nbsp;</label>
+            <input class="w3-check" type="checkbox" name="{{ subject.subject_title }}" value="{{ subject.subject_title }}"><label class="w3-label w3-text-grey">{{ subject.subject_title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
             {% endfor %}
             </div>
             <div class="w3-row">
-                <label class="w3-label w3-text-grey">单项价值:&nbsp;&nbsp;&nbsp;</label>
-                <input class="w3-check" type="checkbox" id="inlineCheckboxma" name="q_money_all" value="optionma"> <label class="w3-label w3-text-grey">All &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input class="w3-check" type="checkbox" id="inlineCheckboxm0" name="q_money_0" value="optionm0"> <label class="w3-label w3-text-grey">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input class="w3-check" type="checkbox" id="inlineCheckboxm1" name="q_money_1" value="optionm1"> <label class="w3-label w3-text-grey">0~1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input class="w3-check" type="checkbox" id="inlineCheckboxm2" name="q_money_2" value="optionm2"> <label class="w3-label w3-text-grey">1~2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input class="w3-check" type="checkbox" id="inlineCheckboxm3" name="q_money_3" value="optionm3"> <label class="w3-label w3-text-grey">2~3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input class="w3-check" type="checkbox" id="inlineCheckboxm4" name="q_money_4" value="optionm4"> <label class="w3-label w3-text-grey">3~4</label>
+                <label class="w3-label w3-text-grey">票价:&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxma" name="q_money_all" value="optionma"> <label class="w3-label w3-text-grey">所有 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm0" name="q_money_0" value="optionm0"> <label class="w3-label w3-text-grey">0GSD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm1" name="q_money_1" value="optionm1"> <label class="w3-label w3-text-grey">1GSD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm2" name="q_money_2" value="optionm2"> <label class="w3-label w3-text-grey">10GSD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm3" name="q_money_3" value="optionm3"> <label class="w3-label w3-text-grey">100GSD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="w3-check" type="checkbox" id="inlineCheckboxm4" name="q_money_4" value="optionm4"> <label class="w3-label w3-text-grey">1000GSD</label>
         </div>
         </div>
         </div>
@@ -69,7 +69,7 @@
 {% endif %}
 
 <div class="w3-card-4 w3-margin w3-responsive">
-    <table class="w3-table w3-striped w3-bordered w3-table-all w3-tiny" align="center">
+    <table class="w3-table w3-striped w3-bordered w3-table-all" align="center">
         <thead>
         <tr class="w3-black w3-opacity">
             <th>题目名称</th>

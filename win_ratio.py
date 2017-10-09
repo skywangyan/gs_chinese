@@ -56,6 +56,7 @@ while True:
                 lose_money += price * item
             ratio_temperate = lose_money * Rate_voter / win_money
             ratio_temperate = round(ratio_temperate, 2)
+            ratio_temperate = ratio_temperate + 1
             #print(ratio_temperate)
             cur.execute("update ss_question set ratio=%s where id=%s", (ratio_temperate, qid,))
             db.commit()
