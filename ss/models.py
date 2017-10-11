@@ -52,12 +52,12 @@ class Question(models.Model):
 
     def case_name(self):
         if self.time_ticket_switch == 1:
-            self.time_ticket_switch_title = "时间*票数"
+           self.time_ticket_switch_title = "有限时间*有限票数"
         elif self.time_ticket_switch == 2:
-            self.time_ticket_switch_title = "时间"
+            self.time_ticket_switch_title = "有限时间*不限票数"
         elif self.time_ticket_switch == 3:
-            self.time_ticket_switch_title = "票数"
-        self.save()
+            self.time_ticket_switch_title = "有限票数*不限时间"
+       self.save()
 
     def __str__(self):
         return self.question_title
