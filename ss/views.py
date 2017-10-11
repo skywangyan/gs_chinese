@@ -96,19 +96,18 @@ def g_s_answer(request):
 
             if query_money_2 is not None:
                 refine_filter = 1
-
                 if question.price_per_ticket > 1.0 and question.price_per_ticket <= 10.0:
-                   question_ids_working.append(question.id)
+                    question_ids_working.append(question.id)
 
             if query_money_3 is not None:
                 refine_filter = 1
                 if question.price_per_ticket > 10.0 and question.price_per_ticket <= 100.0:
-                   question_ids_working.append(question.id)
+                    question_ids_working.append(question.id)
 
             if query_money_4 is not None:
                 refine_filter = 1
                 if question.price_per_ticket > 100.0 and question.price_per_ticket <= 1000.0:
-                   question_ids_working.append(question.id)
+                    question_ids_working.append(question.id)
 
         if len(question_ids_working) > 0:
             refine_result = 1
@@ -144,7 +143,7 @@ def g_s_answer(request):
             'form': form,
         }
 
-        return render(request, 'ss/g_s_answer.html', context)
+        return render(request, 'ss/g_s_answer_new_hongxuan_temp.html', context)
     else:
         user_voted={}
         for question in question_list[:30]:
@@ -163,7 +162,7 @@ def g_s_answer(request):
             'form': form,
         }
 
-        return render(request, 'ss/g_s_answer.html', context)
+        return render(request, 'ss/g_s_answer_new_hongxuan_temp.html', context)
 
 def g_s_ask(request):
     if request.user.is_active:

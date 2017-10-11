@@ -86,9 +86,7 @@ while True:
                         lose_money -= price_per_ticket * item
                     ratio_final = lose_money * Rate_voter / win_money
                     ratio_final = round(ratio_final, 2)
-
                     ratio_final = ratio_final + 1
-
                 cur.execute("update ss_question set ratio=%s where id=%s", (ratio_final, pk))
                 db.commit()
 
@@ -116,10 +114,8 @@ while True:
                     for winners_info in winners:
                         winner_id = winners_info[1]
                         winner_tickets = winners_info[0]
-
-                        winner_return = winner_tickets*price_per_ticket*(1+ratio_final)
-                        winner_answering_return = winner_tickets*price_per_ticket*ratio_final
-
+                        winner_return = winner_tickets*price_per_ticket*(ratio_final)
+                        winner_answering_return = winner_tickets*price_per_ticket*(ratio_final-1)
                         cur.execute("update ss_account_money set balance = balance + %s where user_id = %s",
                                     (winner_return, winner_id,))
                         cur.execute(
@@ -174,7 +170,7 @@ while True:
                         win_money += price_per_ticket * item
                         lose_money -= price_per_ticket * item
                     ratio_final = lose_money * Rate_voter / win_money
-
+                    ratio_final = ratio_final + 1
                 cur.execute("update ss_question set ratio=%s where id=%s", (ratio_final, pk))
                 db.commit()
 
@@ -202,10 +198,8 @@ while True:
                     for winners_info in winners:
                         winner_id = winners_info[1]
                         winner_tickets = winners_info[0]
-
-                        winner_return = winner_tickets * price_per_ticket * (1 + ratio_final)
-                        winner_answering_return = winner_tickets * price_per_ticket * ratio_final
-
+                        winner_return = winner_tickets * price_per_ticket * (ratio_final)
+                        winner_answering_return = winner_tickets * price_per_ticket * (ratio_final - 1)
                         cur.execute("update ss_account_money set balance = balance + %s where user_id = %s",
                                     (winner_return, winner_id,))
                         cur.execute(
@@ -260,6 +254,7 @@ while True:
                         win_money += price_per_ticket * item
                         lose_money -= price_per_ticket * item
                     ratio_final = lose_money * Rate_voter / win_money
+                    ratio_final = ratio_final + 1
                 cur.execute("update ss_question set ratio=%s where id=%s", (ratio_final, pk))
                 db.commit()
 
@@ -287,8 +282,8 @@ while True:
                     for winners_info in winners:
                         winner_id = winners_info[1]
                         winner_tickets = winners_info[0]
-                        winner_return = winner_tickets * price_per_ticket * (1 + ratio_final)
-                        winner_answering_return = winner_tickets * price_per_ticket * ratio_final
+                        winner_return = winner_tickets * price_per_ticket * (ratio_final)
+                        winner_answering_return = winner_tickets * price_per_ticket * (ratio_final - 1)
                         cur.execute("update ss_account_money set balance = balance + %s where user_id = %s",
                                     (winner_return, winner_id,))
                         cur.execute(

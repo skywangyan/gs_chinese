@@ -36,13 +36,13 @@
     </div>
     
     <div class="w3-row-padding">
-       <label for="{{ form.question_images.id_for_label }}" class="w3-label">添加图片 (可选)</label>
-       <input class="w3-input" type="file" id="{{ form.question_images.id_for_label }}" name="{{ form.question_images.html_name }}">
+        <label for="{{ form.question_images.id_for_label }}" class="w3-label">添加图片</label>
+        <input class="w3-input" type="file" id="{{ form.question_images.id_for_label }}" name="{{ form.question_images.html_name }}">
     </div>
 
     <div class="w3-row-padding">
-       <label for="{{ form.question_videos.id_for_label }}" class="w3-label">添加视频连接 (可选)</label>
-       <textarea class="w3-input" type="text" id="{{ form.question_videos.id_for_label }}" maxlength="10000" name="{{ form.question_videos.html_name }}"></textarea>
+        <label for="{{ form.question_videos.id_for_label }}" class="w3-label">添加视频</label>
+        <textarea class="w3-input" type="text" id="{{ form.question_videos.id_for_label }}" maxlength="10000" name="{{ form.question_videos.html_name }}"></textarea>
     </div>
 
     <div class="w3-container">
@@ -60,14 +60,14 @@
         <blockquote>
 
             <input type="radio" name="{{ form.time_ticket_switch.html_name }}" id="{{ from.time_ticket_switch.time_and_ticket }}" value="1" onchange="findRadioSelected()">
-           <label for="{{ from.time_ticket_switch.time_and_ticket }}">有限时间*有限票数</label><br/>
+            <label for="{{ from.time_ticket_switch.time_and_ticket }}">时间*票数</label><br/>
 
             <input type="radio" name="{{ form.time_ticket_switch.html_name }}" id="{{ from.time_ticket_switch.only_time }}" value="2" onchange="findRadioSelected()">
-            <label for="{{ from.time_ticket_switch.only_time }}">有限时间*不限票数</label><br/>
+            <label for="{{ from.time_ticket_switch.only_time }}">时间</label><br/>
 
             <input type="radio" name="{{ form.time_ticket_switch.html_name }}" id="{{ form.time_ticket_switch.only_tickets }}" value="3" onchange="findRadioSelected()">
-            <label for="{{ form.time_ticket_switch.only_tickets }}">有限票数*不限时间</label><br/>
-       </blockquote>
+            <label for="{{ form.time_ticket_switch.only_tickets }}">票数</label><br/>
+        </blockquote>
     </div>
     <div class="w3-container">
         <span>{{ field.errors }}</span>

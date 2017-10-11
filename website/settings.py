@@ -79,8 +79,6 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'HOST':'127.0.0.1',
-        'PORT':'',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'GS',
         'USER': 'gsdb',
