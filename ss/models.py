@@ -57,7 +57,7 @@ class Question(models.Model):
             self.time_ticket_switch_title = "有限时间*不限票数"
         elif self.time_ticket_switch == 3:
             self.time_ticket_switch_title = "有限票数*不限时间"
-       self.save()
+        self.save()
 
     def __str__(self):
         return self.question_title
