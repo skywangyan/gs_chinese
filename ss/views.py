@@ -143,7 +143,7 @@ def g_s_answer(request):
             'form': form,
         }
 
-        return render(request, 'ss/g_s_answer_new_hongxuan_temp.html', context)
+        return render(request, 'ss/g_s_answer.html', context)
     else:
         user_voted={}
         for question in question_list[:30]:
@@ -162,7 +162,7 @@ def g_s_answer(request):
             'form': form,
         }
 
-        return render(request, 'ss/g_s_answer_new_hongxuan_temp.html', context)
+        return render(request, 'ss/g_s_answer.html', context)
 
 def g_s_ask(request):
     if request.user.is_active:
